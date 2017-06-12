@@ -16,6 +16,7 @@ from rest_framework import viewsets
 from django.views.decorators.csrf import csrf_exempt
 from django_filters.rest_framework import DjangoFilterBackend
 from django.views.generic import ListView, DetailView
+from django.db.models import Q
 
 # Create your views here.
 
@@ -25,6 +26,7 @@ def global_setting(request):
     archive_list = Article.objects.distinct_date()
     #标签
     tag_list = Tag.objects.all()
+    search_form = SearchForm()
     #友情链接
     #根据文章评论数量进行排行
     comment_count_list = Comment.objects.values('article').annotate(comment_count=Count('article')).order_by('-comment_count')
@@ -46,9 +48,19 @@ def getpage(request,article_list):
 def index(request):
                    
     #最新文章显示并分页
-    article_list = Article.objects.all().order_by('-id')
-    articles = getpage(request,article_list)
-    return render(request,'blogs.html',locals())
+    #print(type(request.session))
+    if request.GET.get('search_value',None):
+        value = request.GET.get('search_value',None)
+        articles = Article.objects.filter(Q(title__icontains=value)|Q(content__icontains=value)
+                                              |Q(category__name=value)).order_by('-id')                        
+        if not articles :
+            return HttpResponse('没有相关文章')      
+        #articles = getpage(request,article_list)  
+        return render(request,'blogs.html',locals())
+    else:       
+        article_list = Article.objects.all().order_by('-id')
+        articles = getpage(request,article_list)
+        return render(request,'blogs.html',locals())
 
 
 def archive(request):
@@ -71,8 +83,7 @@ def tag_to_article(request):
 #点击文章进入页面
 def article(request):
        
-    id = request.GET.get('id',None)
-    
+    id = request.GET.get('id',None)    
     try:
         article = Article.objects.get(pk=id)
         ClickCount(request,article,id)
@@ -132,6 +143,7 @@ def do_login(request):
                 password = login_form.cleaned_data['password']
                 user = authenticate(username=username,password=password)
                 if user is not None:
+                    #django默认验证
                     user.backend = 'django.contrib.auth.backends.ModelBackend'
                     try:
                         login(request,user)
@@ -139,6 +151,7 @@ def do_login(request):
                         print(e)
                 else:
                     return HttpResponse('登陆失败')
+                
                 return redirect(request.POST.get('source_url'))
             else:
                 return HttpResponse('登陆失败')
@@ -148,7 +161,7 @@ def do_login(request):
         print(e)
     return render(request,'login.html',locals())
 
-#注册
+#注册22
 def do_reg(request):   
     try:
         if request.method=='POST':

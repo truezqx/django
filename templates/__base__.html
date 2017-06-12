@@ -26,8 +26,14 @@
             <a href="/blog" class="uk-navbar-brand">Blog</a>
             <ul class="uk-navbar-nav">
                 <li data-url="blogs"><a href="/blog"><i class="uk-icon-home"></i>主页</a></li>
-                <li><a target="_blank" href=""><i class="uk-icon-book"></i>B</a></li>
-                <li><a target="_blank" href=""><i class="uk-icon-code"></i>C</a></li>
+                <li><a target="_blank" href="/api"><i class="uk-icon-book"></i>API</a></li>
+                <li><a target="_blank" href="/admin"><i class="uk-icon-book"></i>后台管理</a></li>
+                <li>
+                <form action="{% url 'index' %}" method="get">
+                        {{ search_form.search_value }}
+                        <button type="submit">搜索</button>
+                </form>
+                </li>
             </ul>
             <div class="uk-navbar-flip">
                 <ul class="uk-navbar-nav">

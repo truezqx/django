@@ -8,7 +8,12 @@ class ArticleAdmin(admin.ModelAdmin):
     list_display=('title','desc','click_count','user','category')
     list_display_links=('title','desc',)
     list_editable = ('click_count',)
-    
+    search_fields = ('title',)
+    list_filter = ('date_publish',)
+    #date_hierarchy  = 'date_publish'
+    #ordering = ('-date_publish',)
+    filter_horizontal = ('tag',)
+    raw_id_fields = ('user','category')
     fieldsets = (
         (None,{
             'fields':('title','desc','content','user','category')

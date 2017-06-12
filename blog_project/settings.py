@@ -40,7 +40,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'blog',
     'rest_framework',
-    'django_filters',
+
 )
 
 MIDDLEWARE_CLASSES = (
@@ -96,7 +96,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
@@ -135,5 +135,6 @@ STATICFILES_DIRS = (
 
 REST_FRAMEWORK = {
         'PAGINATE_BY':10,
-        'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
     }
+#关闭浏览器使cookie失效
+#SESSION_EXPIRE_AT_BROWSER_CLOSE = True

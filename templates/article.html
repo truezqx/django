@@ -14,12 +14,12 @@
     <div class="uk-width-medium-3-4">
         <article class="uk-article">
             <h2>{{ article.title }}</h2>
-            <p class="uk-article-meta">发表于{{ article.date_publish |date:'Y-m-d' }}</p>
+            <p class="uk-article-meta">发表于{{ article.date_publish |date:'Y-m-d H:i:s' }}</p>
             <p>{{ article.content|safe }}</p>
             <p><a href="{% url 'index' %}">继续阅读 <i class="uk-icon-angle-double-right"></i></a></p>
         </article>
-        <p name='click_count'>点击次数:{{ article.click_count }}</p>{% for tag in article.tag.all %}
-        <p>标签:{{ tag.name }}</p>{% endfor %}<p>分类:{{ article.category.name }}</p>
+        <p name='click_count'>点击次数:{{ article.click_count }}</p>
+        <p>标签:{% for tag in article.tag.all %}{{ tag.name }}{% endfor %}</p><p>分类:{{ article.category.name }}</p>
         {% include 'comment.html' %}
         {% if not request.user.is_authenticated %}
         <div>还没登陆？可以登陆后发表观点哦<a href="{% url 'login' %}">&nbsp;登录</a></div>

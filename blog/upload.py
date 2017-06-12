@@ -12,7 +12,7 @@ import datetime as dt
 def upload_image(request,dir_name):
     #{'error':1,'message':'出错信息'}
     #{'error':0,'url':'图片地址'}
-    print('upload_image')
+    print(dir_name)
     result = {'error':1,'message':'上传出错'}
     files = request.FILES.get('imgFile',None)
     if files:

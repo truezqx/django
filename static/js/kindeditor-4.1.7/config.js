@@ -2,7 +2,7 @@ KindEditor.ready(function(K) {
     K.create('textarea[name=content]',{
 
         // 指定大小
-        width:'1000px',
+        width:'800px',
         height:'500px',
         uploadJson:'/admin/upload/kindeditor',
     });
