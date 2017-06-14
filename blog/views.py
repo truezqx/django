@@ -25,6 +25,13 @@ def test(request):
 
     return render(request,'jquery_test.html',locals())
 
+def reply(request):
+    if request.is_ajax():
+        content=request.POST.get('content','')
+        username=request.POST.get('username','')
+        article_id=request.POST.get('article_id','')
+        Comment.objects.create(content=content,article_id=article_id,username=username)
+    return HttpResponse(json.dumps({"content":content,"username":username,"article_id":article_id}))
 
 def global_setting(request):
     

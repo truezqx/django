@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'^reg/$',do_reg,name='reg'),
     url(r'^tag_article/$',tag_to_article,name='tag_article'),
     url(r'^test/$',test,name='test'),
+    url(r'^reply/$',reply,name='reply'),
 ]
 urlpatterns = format_suffix_patterns(urlpatterns)
 

@@ -31,12 +31,12 @@
 			//});
 			var values=$('#value').val();
 			$.ajax({
-				url:"/Articles/",
+				url:"{% url 'replays'%}",
 				
 				data:{
 					'value':values
 				},
-				type:"GET",
+				type:"POST",
 				dataType:"json",
 				success:function(data,textStatus){
 					//alert(data[0].content)
