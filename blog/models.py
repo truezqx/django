@@ -109,7 +109,7 @@ class Comment(models.Model):
     
     def __str__(self):
         
-        return str(self.id)
+        return str(self.content)
     
 class Links(models.Model):
     title = models.CharField(max_length=50,verbose_name='标题')

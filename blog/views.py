@@ -17,8 +17,14 @@ from django.views.decorators.csrf import csrf_exempt
 from django_filters.rest_framework import DjangoFilterBackend
 from django.views.generic import ListView, DetailView
 from django.db.models import Q
-
+from django.views.decorators.cache import cache_page
+import json
 # Create your views here.
+@csrf_exempt
+def test(request):
+
+    return render(request,'jquery_test.html',locals())
+
 
 def global_setting(request):
     
@@ -45,6 +51,7 @@ def getpage(request,article_list):
     finally:
         return article_list
 #首页
+
 def index(request):
                    
     #最新文章显示并分页
@@ -81,6 +88,7 @@ def tag_to_article(request):
     return render(request,'blogs.html',locals())
 
 #点击文章进入页面
+#@cache_page(60 * 15)
 def article(request):
        
     id = request.GET.get('id',None)    
@@ -90,7 +98,7 @@ def article(request):
     except Article.DoesNotExist:
         return HttpResponse('没有这个文章')    
     
-    comment_form = CommentForm({'username':'匿名用户','article':id}if not request.user.is_authenticated()
+    comment_form = CommentForm({'username':'不愿透露姓名的围观群众','article':id}if not request.user.is_authenticated()
                                else{'username':request.user.username,'article':id})
     
     #获取评论
@@ -346,6 +354,13 @@ class ArticleViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+    
+    def get_queryset(self):
+        queryset = Article.objects.all()
+        value = self.request.query_params.get('value', None)
+        if value is not None:
+            queryset = queryset.filter(Q(title__icontains=value)|Q(content__icontains=value))
+        return queryset
         
 
 class CommentViewSet(viewsets.ModelViewSet):
@@ -365,7 +380,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
 class ArticleList(generics.ListAPIView):
     
-    queryset = Article.objects.all()
+    #queryset = Article.objects.all()
     serializer_class = ArticleSerializer
     filter_backends = (DjangoFilterBackend,)
 
@@ -378,6 +393,6 @@ class ArticleList(generics.ListAPIView):
         queryset = Article.objects.all()
         value = self.request.query_params.get('value', None)
         if value is not None:
-            queryset = queryset.filter(title__icontains=value)
+            queryset = queryset.filter(Q(title__icontains=value)|Q(content__icontains=value))
         return queryset
     

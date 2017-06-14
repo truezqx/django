@@ -1,0 +1,55 @@
+<html>
+	<head>
+		<title>jquery</title>
+
+		<script src="/static/jquery_test/jquery-3.2.1.min.js"></script>
+	</head>
+	<body>
+		<h2 id="title_default"></h2>
+		<textarea rows="15" cols="70" id="get_default"></textarea>
+		<div id="result"></div>
+		<input id="value"/>
+		
+		<button>Click me</button>
+		<h2 id="title"></h2>
+		<textarea rows="15" cols="70" id="get"></textarea>
+		<ul id="comment">
+		</ul>
+
+
+	</body>
+	
+	<script type="text/javascript">
+	$(document).ready(function(){
+		$('button').on('click',function(){
+			//var ajax_load = "<p>safafaf</p>"
+			//var loadUrl = "http://127.0.0.1:8000/Articles/";
+			//var data = {value:"习近平"}
+			//$("#result").html(ajax_load).load(loadUrl);
+			//$.get(loadUrl,data,function(data,textStatus){
+				//alert(data[0].content)
+			//});
+			var values=$('#value').val();
+			$.ajax({
+				url:"/Articles/",
+				
+				data:{
+					'value':values
+				},
+				type:"GET",
+				dataType:"json",
+				success:function(data,textStatus){
+					//alert(data[0].content)
+					$('#title').html(data[0].title)
+					$('#get').html(data[0].content).css('color', 'red');
+					$.each(data[0].comment_set,function(i,item){
+						$('#comment').append('<div>'+item+'</div>')
+					});
+				},
+				
+			});
+		});
+	});
+	</script>
+
+</html>

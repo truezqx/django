@@ -15,9 +15,10 @@ class ArticleSerializer(serializers.HyperlinkedModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
     tag = serializers.SlugRelatedField(many=True,read_only=True,slug_field='name')
     category = serializers.ReadOnlyField(source='category.name')
+    #comment_set = serializers.StringRelatedField()
     class Meta:
         model = Article
-        fields = ('title','content','user','category','click_count','date_publish','tag')
+        fields = ('title','content','user','category','click_count','date_publish','tag','comment_set')
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):

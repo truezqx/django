@@ -15,7 +15,7 @@ urlpatterns = [
     url(r'^logout/$',do_logout,name='logout'),
     url(r'^reg/$',do_reg,name='reg'),
     url(r'^tag_article/$',tag_to_article,name='tag_article'),
-    
+    url(r'^test/$',test,name='test'),
 ]
 urlpatterns = format_suffix_patterns(urlpatterns)
 
